@@ -174,6 +174,23 @@ def main():
         with open(input_file, 'r') as f:
             lines = f.readlines()
             
+        # Clean trailing commands from input lines to make room for our custom footer
+        # We will strip trailing M30, M2, M5, M05, % and empty lines.
+        # We will also strip the final Z-retract move, because we will replace it with G00 Z5.000000.
+        while lines:
+            last_line = lines[-1].strip().upper()
+            if not last_line:
+                lines.pop()
+                continue
+            if last_line in ('M30', 'M2', 'M5', 'M05', '%'):
+                lines.pop()
+                continue
+            # Check for trailing retract: G0/G1 move with Z and no Z-
+            if (last_line.startswith('G0 ') or last_line.startswith('G00 ') or last_line.startswith('G1 ') or last_line.startswith('G01 ')) and 'Z' in last_line and 'Z-' not in last_line:
+                lines.pop()
+                continue
+            break
+
         out_lines = []
         out_lines.append('%\n')
         out_lines.append(f'(Fixed: {os.path.basename(input_file)} -> {os.path.basename(output_file)})\n')
@@ -202,6 +219,14 @@ def main():
             
             out_lines.append(fixed_line + '\n')
             
+        # Append the custom Z-up, spindle stop, and XY home footer
+        out_lines.append('G00 Z5.000000\n\n')
+        out_lines.append('(Footer)\n')
+        out_lines.append('M5\n')
+        out_lines.append('G00 X0.0000 Y0.0000\n')
+        out_lines.append('M2\n')
+        out_lines.append('(Using default footer. To add your own footer create file "footer" in the output dir.)\n')
+        out_lines.append('(end)\n')
         out_lines.append('%')
         
         with open(output_file, 'w') as f:
