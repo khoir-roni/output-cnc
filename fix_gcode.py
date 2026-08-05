@@ -35,10 +35,14 @@ def fix_line(line, plunge_speed, simplify_m3, use_m2):
     g0_g00_fixed = False
     g1_g01_fixed = False
 
-    # Replace M3 Sxxx with M3
+    # Strip M3 and S parameters if simplifying spindle
     if simplify_m3:
-        new_code = re.sub(r'\bM3\s+S\d+(\.\d+)?', 'M3', code_part, flags=re.IGNORECASE)
-        new_code = re.sub(r'\bM3S\d+(\.\d+)?', 'M3', new_code, flags=re.IGNORECASE)
+        # Strip M3, M03 commands (with or without trailing speed parameter S)
+        new_code = re.sub(r'\bM0?3\s*(S\s*\d+(\.\d+)?)?\b', '', code_part, flags=re.IGNORECASE)
+        new_code = re.sub(r'\bM0?3S\s*\d+(\.\d+)?\b', '', new_code, flags=re.IGNORECASE)
+        # Strip any standalone S speed parameters
+        new_code = re.sub(r'\bS\s*\d+(\.\d+)?\b', '', new_code, flags=re.IGNORECASE)
+        new_code = new_code.strip()
         if new_code != code_part:
             code_part = new_code
             m3_fixed = True
@@ -154,7 +158,7 @@ def main():
             print(f"Nilai tidak valid, menggunakan default: {plunge_speed}")
 
     # 3.2 Spindle speed
-    remove_s = input("Sederhanakan Spindle M3? (Hapus kecepatan S, contoh: M3 S1000 -> M3) [Y/n]: ").strip().lower()
+    remove_s = input("Pindahkan M3 ke Header & Hapus Kecepatan S dari Body (seperti I O gra_0001.ngc)? [Y/n]: ").strip().lower()
     if remove_s not in ('n', 'no'):
         simplify_m3 = True
     else:
@@ -193,8 +197,12 @@ def main():
 
         out_lines = []
         out_lines.append('%\n')
+        out_lines.append('(Header)\n')
         out_lines.append(f'(Fixed: {os.path.basename(input_file)} -> {os.path.basename(output_file)})\n')
         out_lines.append('(Generated & Repaired by Antigravity G-Code Fixer)\n')
+        if simplify_m3:
+            out_lines.append('M3\n')
+        out_lines.append('(Header end.)\n')
         
         stat_g0_g00 = 0
         stat_g1_g01 = 0
@@ -217,7 +225,8 @@ def main():
             if g0_g00_f: stat_g0_g00 += 1
             if g1_g01_f: stat_g1_g01 += 1
             
-            out_lines.append(fixed_line + '\n')
+            if fixed_line.strip():
+                out_lines.append(fixed_line + '\n')
             
         # Append the custom Z-up, spindle stop, and XY home footer
         out_lines.append('G00 Z5.000000\n\n')
@@ -240,7 +249,7 @@ def main():
         print(f"  - Perintah G0/G00 diubah (rapid travel)  : {stat_g0_g00}")
         print(f"  - Perintah G1 diubah ke G01              : {stat_g1_g01}")
         print(f"  - Plunge Rapid (Z-) diubah ke G01 (feed) : {stat_plunge_fixed}")
-        print(f"  - Perintah spindle M3 disederhanakan     : {stat_m3_fixed}")
+        print(f"  - Perintah M3 dipindah ke header & body disederhanakan: {stat_m3_fixed}")
         print(f"  - Perintah penutup M30 diubah ke M2      : {stat_m30_fixed}")
         print("-" * 60)
         print("Silakan muat file baru tersebut ke mesin CNC Anda!")

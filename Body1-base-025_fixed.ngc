@@ -1,12 +1,13 @@
 %
+(Header)
 (Fixed: Body1-base-025.nc -> Body1-base-025_fixed.ngc)
 (Generated & Repaired by Antigravity G-Code Fixer)
+M3
+(Header end.)
 G21
 G90
-M3
 G00 X0.0 Y0.0
 G01 Z-0.0100 F250
-M3
 G00 X0.0 Y0.0
 G00 Z4.9900
 G00 X4.2063 Y4.2062
