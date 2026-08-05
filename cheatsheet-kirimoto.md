@@ -263,9 +263,65 @@ Jika lingkaran kecil pada desain Anda berukuran pas **2 mm** atau kurang, operas
 
 ---
 
+## 🛠️ Pembuatan & Pengaturan Custom Tool (Mata Pahat) di CAM & Kiri:Moto
+
+Panduan lengkap untuk membuat dan mendefinisikan mata pahat buatan sendiri (*custom tool*) pada software CAM (seperti Aspire, ArtCAM, Fusion 360, Carveco) dan secara spesifik di Kiri:Moto.
+
+### 🌐 Bagian A: Pembuatan Custom Tool di Software CAM Umum
+
+Untuk menambahkan pahat baru ke dalam database alat (*Tool Database*):
+
+#### Langkah 1: Buka Database Alat (Tool Database)
+1. Buka software CAM yang Anda gunakan.
+2. Cari dan klik menu **Tool Database** (biasanya berupa ikon mata bor).
+3. Pilih kategori kelompok pisau (misalnya: *End Mills*), lalu klik **Add Tool** atau **Create New Tool**.
+
+#### Langkah 2: Parameter Fisik (Tool Geometry)
+Isi spesifikasi bentuk pisau sesuai fisik aslinya:
+*   **Tool Type:** Pilih **End Mill** (atau **flat end** pada software tertentu).
+*   **Name / Label:** Beri nama bebas, contoh: `Endmill 1F 2mm Carbide`.
+*   **Units:** Pilih **Metric (mm)**.
+*   **Diameter (D):** Isi `2.0` mm.
+*   **Flutes:** Isi `1` (karena mata pisau Anda adalah *single flute*).
+
+#### Langkah 3: Parameter Potong (Cutting Parameters)
+Setelan standar aman (bisa disesuaikan lagi dengan jenis bahan yang dipotong):
+*   **Pass Depth (Kedalaman Potong per Turun):** Atur di angka `1.0` mm sampai `2.0` mm. *Aturan aman: maksimal 1x diameter pisau untuk sekali turun agar tidak mudah patah.*
+*   **Stepover (Geseran Samping):** Atur di angka **40% - 50%** dari diameter (sekitar `0.8` mm - `1.0` mm). Ini digunakan saat proses mengikis area luas (*pocketing*).
+
+#### Langkah 4: Kecepatan Mesin (Feeds and Speeds)
+Karena mata pisau Anda hanya memiliki 1 pisau potong (*single flute*), pisau ini sangat bagus untuk membuang berang/serpihan kayu dengan cepat tanpa membuat plastik atau kayu meleleh.
+*   **Spindle Speed (Kecepatan Putar Motor):** `18.000` RPM hingga `24.000` RPM.
+*   **Feed Rate (Kecepatan Jalan Horizontal):** `1.200` mm/menit hingga `1.800` mm/menit.
+*   **Plunge Rate (Kecepatan Jalan Turun Vertikal):** `300` mm/menit hingga `500` mm/menit.
+
+#### Langkah 5: Simpan Alat
+1. Klik **Apply** atau **Save**.
+2. Tool custom Anda sekarang sudah tersimpan dan siap dipilih setiap kali membuat jalur potong (*toolpath*).
+
+---
+
+### 🌐 Bagian B: Mengisi Data Tool di Slicer Kiri:Moto
+
+Berdasarkan struktur menu pada Kiri:Moto, berikut cara memasukkan data mata pisau *Single Flute 2mm*:
+
+#### 1. Kolom Detail Atas
+*   **name:** Isi dengan nama bebas (Contoh: `end 2mm 1F` atau `end 2`).
+*   **type:** Pilih **flat end** (sama persis dengan *end mill* standar bersudut rata).
+*   **metric:** Pastikan bagian ini dicentang atau diaktifkan agar satuannya menggunakan milimeter (mm).
+
+#### 2. Kolom Flute (Penting untuk Ukuran Fisik)
+*   **diameter:** Masukkan angka `2` (sesuai diameter pisau 2mm Anda, bukan default 0.25).
+*   **length:** Isi dengan panjang tajam pisau Anda (panjang ulir potongnya saja, bukan total panjang seluruh batang besi).
+
+Setelah disesuaikan, klik tombol **Save** di bagian bawah menu, lalu klik **Done** untuk menyimpan profil.
+
+---
+
 > [!TIP]
 > **Penyimpanan Profil (Cloud Save)**
 > Jika Anda sudah selesai memasukkan angka-angka ini, jangan lupa tekan **Shift + U** untuk mengamankan dan menyimpan seluruh profil pengaturan ini ke cloud Kiri:Moto!
+
 
 
 
