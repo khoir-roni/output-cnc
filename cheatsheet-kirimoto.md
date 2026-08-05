@@ -235,8 +235,37 @@ Berikut adalah fungsi dari masing-masing jenis operasi potong (tombol kotak-kota
 
 ---
 
+## 🪚 Panduan Khusus: Pengaturan Mata Pisau Single Flute 2mm
+
+Rangkuman lengkap pengaturan mata pisau *Single Flute 2mm* pada Kiri:Moto untuk hasil pemotongan presisi:
+
+### 1. Spesifikasi Mata Pisau (Tool Custom)
+*   **Ukuran Real:** Ukuran shank standar mungkin 1/8 inci (3.175 mm), namun karena diameter mata potong pisau Anda adalah murni **2 mm**, maka angka yang dimasukkan wajib **2 mm**.
+*   **Tipe Alat (Tool Type):** Pilih **flat end** (di Kiri:Moto, pahat *endmill* lurus dinamakan *flat end*).
+*   **Input Data:** Ubah nilai **Diameter** menjadi `2` dan tentukan jumlah **Flute** sebanyak `1`.
+
+### 2. Aturan Urutan Potong (Dalam Duluan, Baru Luar)
+Agar mesin otomatis menyelesaikan pemotongan fitur bagian dalam terlebih dahulu sebelum memotong profil luar (sehingga rigiditas bahan terjaga):
+*   **Cara Otomatis:** Centang opsi **Inner First** pada menu **Output** (Expert mode).
+*   **Cara Manual (Lebih Pasti):** Buat dua buah operasi **Outline** terpisah pada *Operation List*:
+    1.  **Outline 1 (Di Paling Atas):** Masuk ke pengaturan operasi outline dan centang kotak **Inside Only** (hanya memotong lubang dalam).
+    2.  **Outline 2 (Di Paling Bawah):** Centang kotak **Outside Only** (hanya memotong keliling luar).
+
+### 3. Perbedaan Menu Logika Potong (Menu Outline)
+*   **Inside Only:** Hanya mencari dan memotong lubang/kantong/fitur di bagian dalam desain.
+*   **Outside Only:** Hanya memotong jalur keliling paling luar objek.
+*   **Depth First:** Menyelesaikan satu jalur lubang sampai ke kedalaman penuh (tembus) terlebih dahulu sebelum berpindah ke lubang berikutnya, menghemat pergerakan naik-turun Z axis.
+*   **Dogbones:** Memotong sedikit lebih dalam pada bagian sudut siku dalam (membentuk sudut "tulang anjing") agar pasak/sambungan bersudut tajam/kotak bisa masuk dengan presisi tanpa terbentur sudut radius pahat.
+
+### 4. Alternatif Solusi untuk Lubang Kecil
+Jika lingkaran kecil pada desain Anda berukuran pas **2 mm** atau kurang, operasi **Outline** terkadang menolak membuat jalur karena pisau dianggap terlalu besar.
+*   **Solusi:** Gunakan operasi **drill** (mengebor lurus ke bawah) atau **helical** (memutar spiral ke bawah) khusus untuk titik-titik lubang tersebut, dan letakkan urutannya paling atas pada *Operation List*.
+
+---
+
 > [!TIP]
 > **Penyimpanan Profil (Cloud Save)**
 > Jika Anda sudah selesai memasukkan angka-angka ini, jangan lupa tekan **Shift + U** untuk mengamankan dan menyimpan seluruh profil pengaturan ini ke cloud Kiri:Moto!
+
 
 
