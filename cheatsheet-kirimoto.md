@@ -318,9 +318,39 @@ Setelah disesuaikan, klik tombol **Save** di bagian bawah menu, lalu klik **Done
 
 ---
 
+## 📐 Rekomendasi Parameter & Batasan Mesin CNC 3018 (Mata Pisau Single Flute 2mm Carbide)
+
+Mesin CNC Mini 3018 (seperti tipe Genmitsu atau sejenisnya) memiliki keterbatasan pada tingkat kekakuan rangka (*rigidity*) dan kekuatan motor spindle bawaannya (biasanya motor 775 standar dengan kecepatan maksimal 10.000 RPM). 
+
+Saat menggunakan mata pisau **Single Flute 2mm Carbide**, terapkan strategi **"jalan cepat tetapi makannya tipis-tipis"** agar motor spindle tidak macet (*stalling*) dan meminimalkan risiko mata pisau patah akibat getaran rangka mesin.
+
+Berikut adalah racikan parameter yang aman untuk dimasukkan ke Kiri:Moto Anda:
+
+### 1. Ketinggian Z (Limits)
+*   **Z Anchor:** Pilih **Top** (titik koordinat nol sumbu Z berada pas di permukaan atas bahan Anda).
+*   **Z Clearance:** `3.0` mm hingga `5.0` mm (jarak aman pisau saat melayang/pindah tempat di atas bahan agar tidak menabrak).
+
+### 2. Parameter Potong (Pada Operasi Outline)
+*   **Stepdown (Pass Depth / Kedalaman Turun per Lapis):** `0.5` mm. 
+    *   *PENTING:* Jangan langsung memotong sedalam 1 mm atau 2 mm sekali turun. Rangka CNC 3018 tidak kuat menahan bebannya. Potonglah tipis-tipis setebal 0.5 mm secara berulang-ulang sampai materialnya tembus.
+
+### 3. Kecepatan Gerak (Feeds & Speeds)
+*   **Feed Rate (Kecepatan Horizontal):** `600` mm/menit hingga `800` mm/menit.
+    *   *KOREKSI:* Turunkan angka 6000 bawaan Anda ke kisaran 600 - 800. Angka 6000 terlalu ekstrem untuk kemampuan motor stepper dan kekuatan mekanik CNC 3018.
+*   **Plunge Rate (Kecepatan Menusuk Turun Z):** `100` mm/menit hingga `150` mm/menit.
+    *   *KOREKSI:* Pergerakan sumbu Z menusuk material harus dibuat pelan karena gaya tekanan balik vertikal yang besar.
+*   **Spindle Speed:** `10000` RPM (nilai maksimal motor bawaan 775). Di controller GRBL, Anda juga bisa mengatur kecepatan maksimal ke 1000 atau 100% pada software pengirim G-code (seperti Candle/Universal Gcode Sender).
+
+### 4. Fitur Tambahan & Penahan Bahan (Expert Mode)
+*   **Ease Down / Ramp Entry (Aktifkan):** Jalur pisau masuk ke material secara melandai/miring, bukan menancap tegak lurus, sehingga memperingan beban awal pisau.
+*   **Tabs (Aktifkan):** Gunakan *Tabs* dengan lebar jembatan sekitar `3` mm dan tebal `1` mm untuk mengikat hasil potongan agar tidak bergeser atau terlempar di akhir proses pemotongan keliling luar (*outside*).
+
+---
+
 > [!TIP]
 > **Penyimpanan Profil (Cloud Save)**
 > Jika Anda sudah selesai memasukkan angka-angka ini, jangan lupa tekan **Shift + U** untuk mengamankan dan menyimpan seluruh profil pengaturan ini ke cloud Kiri:Moto!
+
 
 
 
