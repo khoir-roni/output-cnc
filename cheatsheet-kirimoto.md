@@ -205,7 +205,38 @@ Berikut adalah panduan perkiraan kecepatan pemotongan (*Feed Rate* & *Plunge Rat
 
 ---
 
+## 🛠️ Jenis Operasi Potong CNC Milling (Kiri:Moto Operations)
+
+Berikut adalah fungsi dari masing-masing jenis operasi potong (tombol kotak-kotak) yang ada pada Kiri:Moto:
+
+### 1. Operasi Potong / Bentuk (Paling Sering Digunakan)
+*   **outline:** Memotong mengikuti garis tepi atau dinding dari desain (bisa keliling luar atau lubang dalam). Ini adalah operasi dasar untuk memotong objek.
+*   **pocket:** Mengikis material di dalam sebuah area tertutup untuk membuat cekungan atau bak (kantong) dengan kedalaman tertentu tanpa menembusnya.
+*   **rough:** Proses pengikisan awal secara kasar untuk membuang material dalam jumlah besar dengan cepat sebelum masuk ke tahap penyelesaian halus (*finishing*).
+*   **contour:** Mengikuti lekukan permukaan 3D naik-turun secara halus, biasanya digunakan untuk *finishing* permukaan yang melengkung atau tidak rata.
+*   **trace:** Memotong mengikuti sebuah garis tunggal atau garis gambar 2D (*engraving/graving*).
+
+### 2. Operasi Pembuatan Lubang (Pengeboran)
+*   **drill:** Membuat lubang secara vertikal lurus ke bawah (mengebor) tepat di titik tengah lingkaran.
+*   **helical:** Membuat lubang dengan cara mata pisau bergerak memutar spiral ke bawah. Sangat berguna membuat lubang besar menggunakan mata pisau yang berdiameter kecil.
+
+### 3. Operasi Khusus & Tambahan
+*   **level:** Meratakan permukaan atas bahan mentah (*facing*) agar benar-benar datar sebelum mulai mengukir.
+*   **area:** Membatasi area kerja mesin agar hanya memotong di dalam kotak koordinat tertentu yang kita pilih saja.
+*   **flip:** Digunakan jika Anda melakukan pengerjaan bolak-balik (2 sisi atas-bawah) agar posisi desain sisi sebaliknya tetap pas dan presisi.
+*   **register:** Membuat lubang atau pasak pemandu (*alignment pins*) sebagai patokan saat membalik bahan pada pengerjaan 2 sisi.
+*   **gcode:** Berfungsi untuk menyisipkan perintah kode G-code manual buatan Anda sendiri di tengah-tengah urutan pekerjaan mesin.
+
+---
+
+> [!TIP]
+> **Rekomendasi Pengerjaan Lubang Bulat / Titik:**
+> Jika lingkaran kecil pada model Anda berbentuk titik atau lubang bulat pas, Anda bisa menggunakan operasi **drill** atau **helical** untuk membuat operasi baru, lalu letakkan posisinya di paling atas pada *Operation List* Anda.
+
+---
+
 > [!TIP]
 > **Penyimpanan Profil (Cloud Save)**
 > Jika Anda sudah selesai memasukkan angka-angka ini, jangan lupa tekan **Shift + U** untuk mengamankan dan menyimpan seluruh profil pengaturan ini ke cloud Kiri:Moto!
+
 
