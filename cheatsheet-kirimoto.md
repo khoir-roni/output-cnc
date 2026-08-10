@@ -40,8 +40,8 @@ Pengaturan koordinat vertikal untuk menjaga keamanan mesin, pahat, dan *clamp* p
 ## 4. Feed & Speed (Kecepatan Gerak Pahat)
 Parameter kontrol waktu pengerjaan dan kualitas potong mesin.
 
-*   **Feed Rate (6000):** Kecepatan potong horizontal (Sumbu X/Y) saat memotong material (6000 mm/menit).
-*   **Plunge Rate (300):** Kecepatan tusuk vertikal (Sumbu Z) saat pahat pertama kali masuk ke dalam material (300 mm/menit).
+*   **Feed Rate (200 - 800):** Kecepatan potong horizontal (Sumbu X/Y) saat memotong material (200 - 800 mm/menit untuk CNC 3018). *Catatan: Nilai default 6000 mm/menit di Kiri:Moto terlalu ekstrem untuk CNC 3018 dan harus diturunkan.*
+*   **Plunge Rate (50 - 150):** Kecepatan tusuk vertikal (Sumbu Z) saat pahat pertama kali masuk ke dalam material (50 - 150 mm/menit). *Catatan: Nilai default 300 mm/menit terlalu cepat untuk sumbu Z CNC 3018.*
 
 ---
 
@@ -113,7 +113,7 @@ flowchart TD
     end
     
     subgraph S4 [4. Kecepatan & Feedrate]
-        Speed1[Set Feed Rate: 6000 mm/min] --> Speed2[Set Plunge Rate: 300 mm/min]
+        Speed1[Set Feed Rate: 200-800 mm/min] --> Speed2[Set Plunge Rate: 50-150 mm/min]
     end
     
     subgraph S5 [5. Alur Potong & G-Code]
@@ -170,8 +170,8 @@ Bagian terpenting untuk mencegah pahat menabrak meja kerja mesin (*spoilboard*).
 ---
 
 ### ⚡ 4. Pengaturan Kecepatan (Feed & Plunge)
-*   **Feed Rate:** Atur ke `6000` mm/menit. Ini adalah kecepatan gerak potong horizontal (X dan Y). *Catatan: Sesuaikan nilai ini dengan kemampuan mesin Anda. Untuk mesin hobi kecil, Anda mungkin perlu menurunkannya ke 1000–2000 mm/menit.*
-*   **Plunge Rate:** Atur ke `300` mm/menit. Ini adalah kecepatan pahat bergerak turun tegak lurus (Sumbu Z) menusuk material. Selalu buat nilai ini jauh lebih kecil dari Feed Rate.
+*   **Feed Rate:** Atur ke `200` hingga `800` mm/menit (tergantung kekerasan bahan). Ini adalah kecepatan gerak potong horizontal (X dan Y). Nilai default 6000 mm/menit terlalu cepat dan akan merusak CNC 3018.
+*   **Plunge Rate:** Atur ke `50` hingga `150` mm/menit. Ini adalah kecepatan pahat bergerak turun tegak lurus (Sumbu Z) menusuk material. Jangan melebihi 150 mm/menit agar sumbu Z tidak menabrak terlalu keras dan mematahkan bit.
 
 ---
 
@@ -190,16 +190,16 @@ Bagian terpenting untuk mencegah pahat menabrak meja kerja mesin (*spoilboard*).
 
 ---
 
-### 🪵 & 💎 Rekomendasi Feed/Plunge Rate Berdasarkan Material
+### 🪵 & 💎 Rekomendasi Feed/Plunge Rate Berdasarkan Material (Khusus CNC 3018)
 
-Berikut adalah panduan perkiraan kecepatan pemotongan (*Feed Rate* & *Plunge Rate*) untuk beberapa jenis material menggunakan mata pahat standar (misal: *2-flute flat endmill* diameter 3.175 mm atau 1/8" pada mesin CNC hobi/semipro):
+Berikut adalah panduan perkiraan kecepatan pemotongan (*Feed Rate* & *Plunge Rate*) untuk beberapa jenis material menggunakan mata pahat standar (misal: *2-flute flat endmill* diameter 3.175 mm atau 1/8" pada mesin CNC 3018 standar):
 
 | Material | Feed Rate (X/Y) | Plunge Rate (Z) | Depth of Cut (Stepdown) per Pass | Keterangan |
 | :--- | :--- | :--- | :--- | :--- |
-| **Kayu Lunak (Softwood / MDF / Plywood)** | 1500 - 2500 mm/menit | 300 - 500 mm/menit | 1.0 - 2.0 mm | Mudah dipotong, bersihkan serpihan kayu secara berkala agar tidak macet. |
-| **Kayu Keras (Hardwood - Jati/Mahoni)** | 1000 - 1500 mm/menit | 200 - 300 mm/menit | 0.5 - 1.0 mm | Butuh kecepatan lebih lambat dan stepdown lebih tipis agar pahat tidak patah dan serat tidak pecah (*tearout*). |
-| **Akrilik (Acrylic / PMMA)** | 800 - 1200 mm/menit | 150 - 250 mm/menit | 0.3 - 0.6 mm | Gunakan mata pahat *single-flute* (O-flute) agar akrilik tidak meleleh dan menggulung pada pahat. |
-| **Aluminium (Soft Metal - Seri 6061)** | 400 - 600 mm/menit | 80 - 120 mm/menit | 0.1 - 0.2 mm | Wajib pelumasan (*mist/air blast*) agar aluminium tidak menempel pada mata pahat (*chip welding*). |
+| **Kayu Lunak (Softwood / Plywood)** | 200 - 400 mm/menit | 50 - 100 mm/menit | 0.5 - 1.0 mm | Mudah dipotong, bersihkan serpihan kayu secara berkala agar tidak menyumbat. |
+| **Kayu Keras (Hardwood - Jati/Mahoni)** | 100 - 250 mm/menit | 30 - 60 mm/menit | 0.2 - 0.5 mm | Butuh kecepatan lebih lambat dan stepdown lebih tipis agar pahat tidak patah dan serat tidak pecah. |
+| **Akrilik (Acrylic / PMMA)** | 100 - 200 mm/menit | 30 - 50 mm/menit | 0.2 - 0.4 mm | Gunakan mata pahat *single-flute* (O-flute) agar akrilik tidak meleleh dan menggulung pada pahat. |
+| **Aluminium (Soft Metal)** | 50 - 150 mm/menit | 20 - 40 mm/menit | 0.1 - 0.2 mm | Wajib pelumasan (*WD-40 / mist*) dan pembersihan chip konstan. Sangat berat untuk 3018. |
 
 *Catatan: Nilai di atas adalah panduan awal. Selalu lakukan tes potong (*test cut*) pada material sisa sebelum memulai proyek utama.*
 
@@ -291,9 +291,13 @@ Setelan standar aman (bisa disesuaikan lagi dengan jenis bahan yang dipotong):
 
 #### Langkah 4: Kecepatan Mesin (Feeds and Speeds)
 Karena mata pisau Anda hanya memiliki 1 pisau potong (*single flute*), pisau ini sangat bagus untuk membuang berang/serpihan kayu dengan cepat tanpa membuat plastik atau kayu meleleh.
-*   **Spindle Speed (Kecepatan Putar Motor):** `18.000` RPM hingga `24.000` RPM.
-*   **Feed Rate (Kecepatan Jalan Horizontal):** `1.200` mm/menit hingga `1.800` mm/menit.
-*   **Plunge Rate (Kecepatan Jalan Turun Vertikal):** `300` mm/menit hingga `500` mm/menit.
+
+> [!WARNING]
+> Pengaturan di bawah ini adalah untuk mesin CNC presisi/industri yang kaku dengan spindle berkecepatan tinggi (seperti Makita Trimmer atau 500W brushless spindle). **Jika Anda menggunakan CNC 3018 standar, JANGAN gunakan nilai ini** (lihat batasannya di Bagian Rekomendasi CNC 3018 di bawah).
+
+*   **Spindle Speed (Kecepatan Putar Motor):** `18.000` RPM hingga `24.000` RPM (Hanya untuk mesin upgrade/besar; CNC 3018 standar hanya mampu maks `10.000` RPM).
+*   **Feed Rate (Kecepatan Jalan Horizontal):** `1.200` mm/menit hingga `1.800` mm/menit (Hanya untuk mesin kaku; CNC 3018 standar harus diturunkan ke `200 - 400` mm/menit).
+*   **Plunge Rate (Kecepatan Jalan Turun Vertikal):** `300` mm/menit hingga `500` mm/menit (Hanya untuk mesin kaku; CNC 3018 standar harus diturunkan ke `50 - 150` mm/menit).
 
 #### Langkah 5: Simpan Alat
 1. Klik **Apply** atau **Save**.
